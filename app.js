@@ -6,8 +6,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { errors, Joi, celebrate } = require('celebrate');
-const usersRouter = require('./routes/users');
-const moviesRouter = require('./routes/movies');
+const mainRouter = require('./routes');
 const NotFoundError = require('./errors/not-found-err');
 const { INTERNAL_SERVER_ERROR } = require('./utils/error-codes');
 const { login, createUser, logout } = require('./controllers/users');
@@ -71,8 +70,7 @@ app.post('/signout', logout);
 app.use(cookieParser());
 app.use(auth);
 
-app.use(usersRouter);
-app.use(moviesRouter);
+app.use(mainRouter);
 app.use(errorLogger);
 app.use((req, res, next) => {
   next(new NotFoundError('Адрес не существует'));

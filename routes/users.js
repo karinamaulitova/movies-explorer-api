@@ -9,9 +9,9 @@ const {
   findCurrentUser,
 } = require('../controllers/users');
 
-router.get('/users/me', findCurrentUser);
+router.get('/me', findCurrentUser);
 router.patch(
-  '/users/me',
+  '/me',
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),

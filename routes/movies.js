@@ -12,7 +12,7 @@ const {
 const linkValidator = require('../utils/linkValidator');
 
 router.post(
-  '/movies',
+  '/',
   celebrate({
     body: Joi.object().keys({
       country: Joi.string().required(),
@@ -30,9 +30,9 @@ router.post(
   }),
   createMovie,
 );
-router.get('/movies', findAll);
+router.get('/', findAll);
 router.delete(
-  '/movies/:movieId',
+  '/:movieId',
   celebrate({
     params: Joi.object().keys({
       movieId: Joi.string().length(24).hex(),
