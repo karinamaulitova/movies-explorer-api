@@ -84,11 +84,11 @@ module.exports.findCurrentUser = async (req, res, next) => {
 };
 
 module.exports.changeProfile = (req, res, next) => {
-  const { name } = req.body;
+  const { name, email } = req.body;
 
   User.findByIdAndUpdate(
     req.user._id,
-    { name },
+    { name, email },
     { new: true, runValidators: true, omitUndefined: true },
   )
     .orFail(new Error('NotFound'))
