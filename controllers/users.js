@@ -102,6 +102,10 @@ module.exports.changeProfile = (req, res, next) => {
             'Переданы некорректные данные при обновлении профиля',
           ),
         );
+      } else if (err.name === 'MongoError' && err.code === 11000) {
+        next(
+          new ConflictError('Пользователь с таким email уже зарегистрирован'),
+        );
       } else {
         next(new Error('Ошибка по умолчанию'));
       }
