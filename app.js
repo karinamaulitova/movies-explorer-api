@@ -22,7 +22,7 @@ app.use(limiter);
 app.use(helmet());
 app.use(
   cors({
-    origin: ['https://karina.movie.students.nomoredomains.monster', 'http://localhost'],
+    origin: ['https://karina.movie.students.nomoredomains.monster', 'http://localhost:3000'],
     credentials: true,
     allowedHeaders: 'cookie,content-type',
   }),
