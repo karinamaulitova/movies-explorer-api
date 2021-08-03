@@ -7,34 +7,49 @@ const UnauthorizedError = require('../errors/unauthorized-err');
 const ConflictError = require('../errors/conflict-err');
 const { jwtSecret, isProduction } = require('../utils/config');
 
-module.exports.createUser = (req, res, next) => {
+module.exports.createUser = async (req, res, next) => {
   const { name, email, password } = req.body;
-  bcrypt
-    .hash(password, 10)
-    .then((hash) => User.create({
+  try {
+    const hash = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
       name,
       email,
       password: hash,
-    }))
-    .then((user) => {
-      const { password: _, ...publicUser } = user.toObject();
-      res.send({ data: publicUser });
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(
-          new RequestError(
-            'Переданы некорректные данные при создании пользователя',
-          ),
-        );
-      } else if (err.name === 'MongoError' && err.code === 11000) {
-        next(
-          new ConflictError('Пользователь с таким email уже зарегистрирован'),
-        );
-      } else {
-        next(new Error('Ошибка по умолчанию'));
-      }
     });
+
+    const { password: _, ...publicUser } = user.toObject();
+    res.send({ data: publicUser });
+
+    const token = jwt.sign(
+      {
+        _id: user._id,
+      },
+      jwtSecret,
+    );
+    res.cookie('jwt', token, {
+      maxAge: 3600000 * 24 * 7,
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'None',
+    });
+    res.status(201).send({ success: true });
+    res.end();
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      next(
+        new RequestError(
+          'Переданы некорректные данные при создании пользователя',
+        ),
+      );
+    } else if (err.name === 'MongoError' && err.code === 11000) {
+      next(
+        new ConflictError('Пользователь с таким email уже зарегистрирован'),
+      );
+    } else {
+      next(new Error('Ошибка по умолчанию'));
+    }
+  }
 };
 
 module.exports.login = async (req, res, next) => {
