@@ -85,7 +85,11 @@ module.exports.login = async (req, res, next) => {
 };
 
 module.exports.logout = (req, res) => {
-  res.clearCookie('jwt');
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: 'None',
+  });
   res.status(200).send({ success: true });
   res.end();
 };
