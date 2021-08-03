@@ -80,7 +80,7 @@ module.exports.login = async (req, res, next) => {
     res.status(201).send({ success: true });
     res.end();
   } catch (err) {
-    next(new UnauthorizedError('Пользователь неавторизован'));
+    next(new UnauthorizedError(err.message));
   }
 };
 
