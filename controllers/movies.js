@@ -11,11 +11,11 @@ module.exports.createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
-    movieId,
+    id,
   } = req.body;
 
   Movie.create({
@@ -25,11 +25,11 @@ module.exports.createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
-    movieId,
+    id,
     owner: req.user._id,
   })
     .then((movie) => res.send({ data: movie }))
