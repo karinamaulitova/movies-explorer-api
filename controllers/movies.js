@@ -67,7 +67,7 @@ module.exports.deleteById = async (req, res, next) => {
     res.send({ data: movie });
   } catch (err) {
     if (err.message === 'NotFound') {
-      next(new NotFoundError('Карточка с указанным _id не найдена'));
+      next(new NotFoundError('Карточка с указанным movieId не найдена'));
     } else if (err.name === 'CastError') {
       next(
         new RequestError('Переданы некорректные данные при удалении карточки'),

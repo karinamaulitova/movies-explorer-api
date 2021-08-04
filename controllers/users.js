@@ -75,7 +75,7 @@ module.exports.login = async (req, res, next) => {
       maxAge: 3600000 * 24 * 7,
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'None',
+      sameSite: isProduction ? 'None' : false,
     });
     res.status(201).send({ success: true });
     res.end();
@@ -88,7 +88,7 @@ module.exports.logout = (req, res) => {
   res.clearCookie('jwt', {
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'None',
+    sameSite: isProduction ? 'None' : false,
   });
   res.status(200).send({ success: true });
   res.end();
