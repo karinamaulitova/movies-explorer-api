@@ -29,7 +29,7 @@ module.exports.createMovie = (req, res, next) => {
     nameRU,
     nameEN,
     thumbnail,
-    id,
+    movieId: id,
     owner: req.user._id,
   })
     .then((movie) => res.send({ data: movie }))
@@ -56,7 +56,7 @@ module.exports.deleteById = async (req, res, next) => {
   const { movieId } = req.params;
   const { _id: currentUserId } = req.user;
   try {
-    const movie = await Movie.findById(movieId).orFail(new Error('NotFound'));
+    const movie = await Movie.findOne({ movieId }).orFail(new Error('NotFound'));
 
     if (!movie.owner.equals(currentUserId)) {
       next(new ForbiddenError('Доступ запрещен'));
