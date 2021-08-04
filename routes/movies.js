@@ -21,11 +21,11 @@ router.post(
       year: Joi.string().required(),
       description: Joi.string().required(),
       image: Joi.string().required().custom(linkValidator, 'custom URL validation'),
-      trailer: Joi.string().required().custom(linkValidator, 'custom URL validation'),
+      trailerLink: Joi.string().required().custom(linkValidator, 'custom URL validation'),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
-      thumbnail: Joi.string().required().custom(linkValidator, 'custom URL validation'),
-      movieId: Joi.number().required(),
+      thumbnail: Joi.string().custom(linkValidator, 'custom URL validation'),
+      id: Joi.number().required(),
     }),
   }),
   createMovie,
@@ -35,7 +35,7 @@ router.delete(
   '/:movieId',
   celebrate({
     params: Joi.object().keys({
-      movieId: Joi.string().length(24).hex(),
+      id: Joi.string().length(24).hex(),
     }),
   }),
   deleteById,

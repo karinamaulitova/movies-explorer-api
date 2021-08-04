@@ -35,7 +35,7 @@ const movieSchema = new mongoose.Schema({
     },
     required: true,
   },
-  trailer: {
+  trailerLink: {
     type: String,
     validate: {
       validator(str) {
@@ -59,14 +59,13 @@ const movieSchema = new mongoose.Schema({
       },
       message: (props) => `${props.value} is not a valid link!`,
     },
-    required: true,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
   },
-  movieId: {
+  id: {
     type: Number,
     required: true,
   },
