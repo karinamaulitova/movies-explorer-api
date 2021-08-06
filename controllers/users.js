@@ -19,7 +19,6 @@ module.exports.createUser = async (req, res, next) => {
     });
 
     const { password: _, ...publicUser } = user.toObject();
-    res.send({ data: publicUser });
 
     const token = jwt.sign(
       {
@@ -33,7 +32,7 @@ module.exports.createUser = async (req, res, next) => {
       secure: isProduction,
       sameSite: isProduction ? 'None' : false,
     });
-    res.status(201).send({ success: true });
+    res.status(201).send({ data: publicUser });
     res.end();
   } catch (err) {
     if (err.name === 'ValidationError') {
