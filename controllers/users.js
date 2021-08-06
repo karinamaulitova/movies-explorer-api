@@ -31,7 +31,7 @@ module.exports.createUser = async (req, res, next) => {
       maxAge: 3600000 * 24 * 7,
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'None',
+      sameSite: isProduction ? 'None' : false,
     });
     res.status(201).send({ success: true });
     res.end();
